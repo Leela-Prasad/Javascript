@@ -1,0 +1,1127 @@
+Default Value for any variable is undefined
+
+Array is object type.
+
+A function will be matched when there are insufficient parameters - how it effects overloading and overriding capability?
+
+Equality operator: (===)
+------------------------
+// Strict Equality (Type + Value)
+// Compares both Type and Value
+console.log(1  === 1);
+console.log('1' === 1);
+
+// Loose Equality (Value)
+// Compares only Value
+// In This Equality compiler converts the right side argument type to left hand side type and compares the value
+// It is recommended to use === as it will not give any side effects
+console.log(1  == 1);
+console.log('1' == 1);
+console.log(true == 1); //true
+console.log(1 == true); //true
+
+
+Logical Operators:
+------------------
+// Here output is the value of second operand
+// Because for Logical Operators Javascript follows Truthy or Falsy if the operand is not a boolean
+
+/* Falsy (false)
+undefined
+null
+0
+''
+false
+NaN */
+
+// Anything that is not Falsy is Truthy
+console.log(false || true);
+console.log(false || 'Leela');
+console.log(false || 1);
+
+// Example of short circuting
+// Evaulates Expression until one of the operand is true
+console.log(false || 1 || 2);
+
+
+
+For Loop Variations:
+let person = {
+    name: 'Leela',
+    age: 29
+}
+
+for (let key in person) {
+    console.log(key, person[key]);
+}
+
+let colors = ['red', 'blue', 'green'];
+
+for (let index in colors) {
+    console.log(index, colors[index]);
+}
+
+
+for(let color of colors) {
+    console.log(color);
+}
+
+* for-in is used to iterate properties of an object
+* for-of is used to iterate over an array
+
+
+Objects:
+const circle = {
+    radius: 1,
+    location: {
+        x: 1,
+        y: 1
+    },
+    isVisible: true,
+    draw: function() {
+        console.log("Draw Method");
+    }
+}
+
+circle.draw();
+
+Constructor Function:
+function Circle(radius) {
+    this.radius = radius;
+    this.draw = function() {
+        console.log("Draw Method");
+    }
+}
+
+const circle = new Circle(1);
+
+Constructor Property:
+Every Object has constructor property which returns function that is used to create object.
+
+const circle = new Circle(1);
+console.log(circle.constructor);
+
+output:
+ƒ Circle(radius) {
+    this.radius = radius;
+    this.draw = function() {
+        console.log("Draw Method");
+    }
+}
+
+let x = {};
+console.log(x.constructor);
+
+output:
+ƒ Object() { [native code] }
+
+let str = "abc";
+console.log(str.constructor);
+
+output: 
+ƒ String() { [native code] }
+
+** Functions in Javascript are objects
+Since Functions are objects then we can use constructor property to find who created that function.
+eg: 
+Circle.constructor
+ƒ Function() { [native code] }
+
+Below both are same.
+function Circle(radius) {
+    this.radius = radius;
+    this.draw = function() {
+        console.log("Draw Method");
+    }
+}
+
+let circle = new Circle(1);
+
+const Circle1 = new Function('radius', `
+this.radius = radius;
+this.draw = function() {
+    console.log("Draw Method");
+}
+`)
+
+let anotherCircle = new Circle1(2);
+
+Since Function is an object, it has couple of properties and methods
+Circle.name
+"Circle"
+
+Circle.length
+1
+
+function print(username) {
+    console.log("Hello " + username)
+}
+
+Circle.call({}, 1);
+print.call({}, "Leela");
+print.apply({}, ["Prasad"]);
+
+Here call and apply methods (used to call a function) are same expect that second argument is
+vararg for call method
+array for apply method
+
+Here if we use new keyword when creating constructor then empty object {} will be passed while calling the constructor function.
+If it is not passed
+
+const circle = Circle(1);
+
+Here window object will be passed.
+
+Circle.call(window, 1);
+
+Primitives v/s Reference Types
+
+Primitives:
+Number
+String
+Boolean
+undefined
+symbol
+null
+
+Reference Types:
+Object
+Function
+Array
+
+
+Object Enumeration:
+const circle = {
+    radius: 1,
+    draw: function() {
+        console.log("Draw Method");
+    }
+}
+
+for(let key in circle) {
+    console.log(key);
+}
+
+for(let key of Object.keys(circle)) {
+    console.log(key);
+}
+
+for(let entry of Object.entries(circle)) {
+    console.log(entry);
+}
+
+if('radius' in circle) {
+    console.log('yes');
+}else {
+    console.log('no');
+}
+
+Object Cloning:
+const circle1 = {};
+for(let key in circle)
+    circle1[key] = circle[key];
+console.log(circle1);  
+
+const circle2 = Object.assign({'color': 'yellow'}, circle);
+console.log(circle2);
+
+const circle3 = { ...circle }
+console.log(circle3);
+
+Template Literals(``):
+This is useful when we want to print message in multiple lines eg: email
+In template literals we can use variables, expressions or functions
+
+
+Date:
+const date1 = new Date();
+const date2 = new Date(2021, 4, 17, 9);
+const date3 = new Date("May 12 2021 21:00");
+
+Finding Reference Type in an Array:
+const courses = [
+    {id: 1, name: 'a'},
+    {id: 2, name: 'b'},
+];
+
+const course = courses.find(function(course) {
+    return course.name === 'b';
+})
+
+console.log(course);
+
+function in find method is called as Predicate or Callback Function(because this function will be called back on every element of the array until a match found)
+
+Arrow Function:
+const course = courses.find((course) => {
+    return course.name === 'b';
+})
+
+or
+
+const course = courses.find(course => course.name === 'b');
+
+If there are no parameters then we should use ()
+
+() => {
+
+}
+
+Functions:
+//Function Declaration
+function walk() {
+   console.log('Walk');
+}
+
+//Function Expression
+const run = function() {
+   console.log('run');
+};
+
+run();
+
+const move = run;
+move();
+
+
+Hoisting:
+In javascript before execution javascript engine will move funciton declaration to the top.
+so we can make function calls before it is defined.
+
+eg:
+walk();
+function walk() {
+   console.log('Walk');
+}
+
+
+let vs var:
+let or const are block scoped
+whereas
+var is function scoped, This can lead to whole lot of problems or issues.
+
+
+This will throw an error that 'i' is not defined outside of for loop.
+function start() {
+   for(let i=0; i<5; ++i) {
+      console.log(i);
+   }
+   console.log(i);	// throws error
+}
+
+
+whereas below code perfectly works, because i is available across start function. That's why always use let or const to define variables so that it will block scope variables.
+function start() {
+   for(var i=0; i<5; ++i) {
+      console.log(i);
+   }
+   console.log(i);	// prints 5
+}
+
+
+Another problem with var is 
+if we define a global variable with var then that variable will be attached to window object which might corrupt an exisiting property of window object.
+whereas variable with let will not be attached to window object.
+
+var message = 'hi'; 
+window.message; //prints hi
+
+let message = 'hi'; 
+window.message; //undefined
+
+
+Stop Watch Example:
+function StopWatch() {
+
+   let startTime, endTime, isRunning, duration = 0;
+
+   this.start = function() {
+      if(isRunning) 
+         throw new Error('Stop watch has already started');
+
+      isRunning = true;
+
+      startTime = new Date();
+   },
+
+   this.stop = function() {
+      if(!isRunning)
+         throw new Error('Stop Watch has stopped');
+
+      isRunning = false;
+
+      endTime = new Date();
+
+      duration += (endTime.getTime() - startTime.getTime())/1000;
+   },
+
+   this.reset = function() {
+      startTime = null,
+      endTime = null,
+      isRunning = false,
+      duration = 0;
+   },
+
+   Object.defineProperty(this, 'duration', {
+      get: function() {
+         return duration;
+      }
+   });
+}
+
+Prototypical Inheritance:
+Inheritance between classes is a "Classical Inheritance"
+but in Javascript we don't have classes so we have inheritance between objects which is known as "Prototypical Inheritance".
+
+Prototype is a Parent of another Object.
+Object Base is the super objects that we have in the application.
+
+let x = {};
+let y = {};
+here
+x -> object base
+y -> object base
+
+Here x and y points to same object base.
+Object.getPrototypeOf(x) === Object.getPrototypeOf(y)
+true
+
+x.__proto__ === y.__proto__
+true
+
+Multi Level Inheritance 
+let myArray = []
+Here myArray -> Array Base -> Object Base
+
+Custom Prototype:
+Objects created by a given constructor will have same prototype.
+i.e., all objects created by Array constructor will have same prototype which is Array Base
+all objects created by Circle Constructor will have same prototype which is Circle Base.
+
+function Circle(radius) {
+   this.radius = radius;
+
+   this.draw = function() {
+      console.log("Draw Circle");
+   }
+}
+
+let circle = new Circle(10);
+
+Here circle -> Circle Base -> Object Base
+All objects created by circle constructor will have circle base as the prototype.
+
+Property Descriptors:
+let person = {name: 'Leela'};
+
+for(let key in person)
+   console.log(key);
+   
+output: name
+
+here we are not getting object base methods like toString()
+because every property in object has descriptors
+writable // for overriding definition from parent  
+configurable //for deleting a property
+enumerable // for overriding
+
+
+let person = {name: 'Leela'};
+let objectBase = Object.getPrototypeOf(person);
+let descriptor = Object.getOwnPropertyDescriptor(objectBase, 'toString');
+console.log(descriptor);
+
+{writable: true, enumerable: false, configurable: true, value: ƒ}
+
+Here we see enumerable for toString is false 
+By Default all these properties are set to true, but we can override as below
+let person = {name: 'Leela'};
+
+Object.defineProperty(person, 'name', {
+   configurable: false, //delete person.name;
+   enumerable: true, //Object.keys(person)
+   writable: false //person.name = 'Jagu'
+});
+
+
+Constructor Prototype:
+Constructor is a funciton and functions are objects in javascript.
+constructor has a prototype property which represents the object that will be used as the parent for objects created by constructor.
+
+function Circle(radius) {
+   this.radius = radius;
+
+   this.draw = function() {
+      console.log("Draw Circle");
+   }
+}
+
+Circle.prototype
+{constructor: ƒ}
+ constructor: ƒ Circle(radius)
+  __proto__: Object
+  
+Circle.prototype - represents Circle Base.
+
+let x = {}
+Object.prototype
+{constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, __lookupGetter__: ƒ, …}
+
+Object.prototype - represents Object Base
+
+let myArray = []
+Array.prototype
+[constructor: ƒ, concat: ƒ, copyWithin: ƒ, fill: ƒ, find: ƒ, …]
+
+Array.prototype - represents Array Base
+
+
+function Circle(radius) {
+   this.radius = radius;
+
+   this.draw = function() {
+      console.log("Draw Circle");
+   }
+}
+
+let c1 = new Circle(1);
+let c2 = new Circle(2);
+
+c1
+Circle {radius: 1, draw: ƒ}
+draw: ƒ ()
+radius: 1
+__proto__: Object
+
+c2
+Circle {radius: 2, draw: ƒ}
+draw: ƒ ()
+radius: 2
+__proto__: Object
+
+In this example c1 and c2 will have draw method which is a waste of memory if we have lot of objects in our application.
+so the best way is to move this method to prototype i.e., circle base.
+
+function Circle(radius) {
+   this.radius = radius;
+}
+
+Circle.prototype.draw = function() {
+   console.log("Draw Circle");
+};
+
+Circle.prototype.toString = function() {
+   console.log("Circle with radius " + this.radius);
+}
+
+let c1 = new Circle(1);
+let c2 = new Circle(2);
+
+c1
+Circle {radius: 1}
+radius: 1
+__proto__:
+draw: ƒ ()
+constructor: ƒ Circle(radius)
+__proto__: Object
+
+c2
+Circle {radius: 2}
+radius: 2
+__proto__:
+draw: ƒ ()
+constructor: ƒ Circle(radius)
+__proto__: Object
+
+c1.toString();
+Circle with radius 1
+
+c2.toString();
+Circle with radius 2
+
+
+Instance vs Prototype Members:
+We can access prototype members in instance members and 
+instance members in prototype members.
+
+function Circle(radius) {
+   // Instance Members
+   this.radius = radius;
+
+   this.move = function() {
+      console.log("Move");
+   }
+}
+
+// Prototype Members
+Circle.prototype.draw = function() {
+   this.move();
+   console.log("Draw Circle");
+};
+
+Circle.prototype.toString = function() {
+   console.log("Circle with radius " + this.radius);
+}
+
+let c1 = new Circle(1);
+let c2 = new Circle(2);
+
+Iterating Instance and Prototype members:
+for above example 
+
+//Returns instance members
+console.log(Object.keys(c1));
+
+["radius", "move"]
+
+// Returns Prototype members
+for(let key in c1)
+   console.log(key);
+   
+radius
+move
+draw
+toString
+
+we can also check whether the property is a own property(instance) or prototype property.
+c1.hasOwnProperty('radius')
+true
+
+c1.hasOwnProperty('draw')
+false
+
+Javascript is a dynamic programming language, meaning you can modify built in object base also BUT NEVER DO IT.
+if you modify then there might be third party which might depend on the method we modified which will create lot of issues.
+
+Array.prototype.shuffle = funciton() {
+ // ...
+}
+
+let arr = []
+arr.shuffle();
+
+*** Don't Modify Objects you don't own 
+
+
+Multi Level Inheritance:
+Circle -> Shape -> Object
+
+function Shape() {
+
+}
+
+Shape.prototype.duplicate = function() {
+   console.log("Duplicate Method");
+}
+
+// Here Object.create creates a object with a given prototype i.e., Shape
+// If this line is no there then below is the default implementation
+//Circle.prototype = Object.create(Object.prototype);
+
+// Below Line creates Link between Circle and Shape 
+Circle.prototype = Object.create(Shape.prototype);
+
+// When a prototype is reset then we need to set constructor also, because Circle prototype is reset.
+Circle.prototype.constructor = Circle;
+
+function Circle(radius) {
+   this.radius = radius; 
+}
+
+Circle.prototype.draw = function() {
+   console.log("Draw Method");
+}
+
+let s = new Shape();
+let c = new Circle(1);
+
+Calling Super Constructor:
+function Shape(color) {
+   this.color = color;
+}
+
+Shape.prototype.duplicate = function() {
+   console.log("Duplicate Method");
+}
+
+Circle.prototype = Object.create(Shape.prototype);
+Circle.prototype.constructor = Circle;
+
+function Circle(radius, color) {
+   // This will not work because this function call
+   // will be executed with Window reference or Global reference instead of this
+   //Shape(color);
+
+   Shape.call(this, color);
+   this.radius = radius; 
+}
+
+Circle.prototype.draw = function() {
+   console.log("Draw Method");
+}
+
+let s = new Shape();
+let c = new Circle(1, "red");
+
+
+Intermediate Function Inheritance:
+function extend(Child, Parent) {
+   Child.prototype = Object.create(Parent.prototype);
+   Child.prototype.constructor = Child; 
+}
+
+function Shape(color) {
+   this.color = color;
+}
+
+Shape.prototype.duplicate = function() {
+   console.log("Duplicate Method");
+}
+
+extend(Circle, Shape);
+
+function Circle(radius, color) {
+   Shape.call(this, color);
+   this.radius = radius; 
+}
+
+Circle.prototype.draw = function() {
+   console.log("Draw Method");
+}
+
+function Square(size) {
+   this.size = size;
+}
+
+extend(Square, Shape);
+
+let s = new Shape();
+let c = new Circle(1, "red");
+let sq = new Square(10);
+
+Method Overriding:
+function extend(Child, Parent) {
+   Child.prototype = Object.create(Parent.prototype);
+   Child.prototype.constructor = Child; 
+}
+
+function Shape() {
+   
+}
+
+Shape.prototype.duplicate = function() {
+   console.log("Duplicate Method");
+}
+
+extend(Circle, Shape);
+
+function Circle() {
+   
+}
+
+Circle.prototype.duplicate = function() {
+   //In case if we want to parent duplicate method
+   //Shape.prototype.duplicate.call(this);
+   console.log("Duplicate Circle Method")
+}
+
+let s = new Shape();
+let c = new Circle();
+
+Polymorphism:
+function extend(Child, Parent) {
+   Child.prototype = Object.create(Parent.prototype);
+   Child.prototype.constructor = Child; 
+}
+
+function Shape() {
+   
+}
+
+Shape.prototype.duplicate = function() {
+   console.log("Duplicate Method");
+}
+
+function Circle() {
+   
+}
+
+extend(Circle, Shape);
+
+Circle.prototype.duplicate = function() {
+   console.log("Duplicate Circle Method");
+}
+
+function Square() {
+
+}
+
+extend(Square, Shape);
+
+Square.prototype.duplicate = function() {
+   console.log("Duplicate Square Method");
+}
+
+let shapes = [
+   new Circle(),
+   new Square()
+];
+
+for (shape of shapes) 
+   shape.duplicate();
+   
+Polymorphism/Mixin:
+function mixin(target, ...sources) {
+   Object.assign(target, ...sources);
+}
+
+const canEat = {
+   eat: function() {
+      console.log("Eating");
+   }
+}
+
+const canWalk = {
+   walk: function() {
+      console.log("Walking");
+   }
+}
+
+const canSwim = {
+   swim: function() {
+      console.log("Swimming");
+   }
+}
+
+function Person() {
+}
+
+// Object.assign copies all properties and methods from source objects to target object
+// const obj = Object.assign({}, canEat, canWalk);
+// console.log(obj);
+
+//Object.assign(Person.prototype, canEat, canWalk);
+mixin(Person.prototype, canEat, canWalk)
+const person = new Person();
+console.log(person);
+
+function GoldFish() {
+}
+
+//Object.assign(GoldFish.prototype, canEat, canSwim);
+mixin(GoldFish.prototype, canEat, canSwim);
+const fish = new GoldFish();
+console.log(fish);
+
+
+Exercise:
+function HtmlElement() {
+   this.click = function() {
+      console.log('clicked');
+   }
+}
+
+HtmlElement.prototype.focus = function() {
+   console.log('focused');
+}
+
+HtmlSelectElement.prototype = new HtmlElement();
+HtmlSelectElement.prototype.constructor = HtmlSelectElement;
+
+function HtmlSelectElement(items=[]) {
+   this.items = items;
+   this.addItem = function(item) {
+      items.push(item);
+   },
+   this.removeItem = function(item) {
+     this.items.splice(this.items.indexOf(item), 1);
+   }
+}
+
+console.log(new HtmlSelectElement());
+
+
+Exercise:
+function HtmlElement() {
+   this.click = function() {
+      console.log('clicked');
+   }
+}
+
+HtmlElement.prototype.focus = function() {
+   console.log('focused');
+}
+
+HtmlSelectElement.prototype = new HtmlElement();
+HtmlSelectElement.prototype.constructor = HtmlSelectElement;
+
+function HtmlSelectElement(items=[]) {
+   this.items = items;
+   this.addItem = function(item) {
+      items.push(item);
+   },
+   this.removeItem = function(item) {
+     this.items.splice(this.items.indexOf(item), 1);
+   }
+
+   this.render = function() {
+      return `
+      <select>${this.items.map (item => `
+         <option>${item}</option>`).join("")}
+      </select>`
+   }
+}
+
+function HtmlImageElement(src) {
+   this.src = src,
+   this.render = function() {
+      return `<img src="${this.src}" />`
+   }
+}
+
+HtmlImageElement.prototype = new HtmlElement();
+HtmlImageElement.prototype.constructor = HtmlImageElement;
+
+let htmlElements = [
+   new HtmlSelectElement([4,2,7]),
+   new HtmlImageElement("http://xyz.com")
+]
+
+for(let htmlElement of htmlElements)
+   console.log(htmlElement.render());
+   
+   
+ES6 Classes:
+classes are syntatic sugar on javascript objects
+
+class Circle {
+   constructor(radius) {
+      this.radius = radius;
+      this.move = function() {} // instance method
+   }
+
+   draw() { // prototype method
+      console.log("Draw");
+   }
+}
+
+const c = new Circle(1);
+
+typeof Circle
+"function"
+
+Classes are NOT Hoisted unlike Function Declarations.
+
+Static Methods:
+Static Methods will not be present in object, but it will accessible at a class level.
+We make method as static when implementation is not specific or tied to particular object. classic example will be helper/utility methods.
+
+class Circle {
+   constructor(radius) {
+      this.radius = radius;
+   }
+
+   static parse(str) {
+      const radius = JSON.parse(str).radius;
+      return new Circle(radius);
+   }
+}
+
+//const c = new Circle(2);
+console.log(Circle.parse('{"radius" : 10}'));
+
+strict mode:
+'use strict';
+
+function Circle() {
+   this.draw = function() {
+      console.log(this)
+   }
+}
+
+
+const c = new Circle();
+c.draw();
+
+const draw = c.draw;
+// Here this refers to Window object in browser, Global in Node
+// To prevent accidentally using or modifying global object we need to use strict mode.
+draw();
+
+Class Body will always execute in strict mode by default
+
+class Circle {
+   draw() {
+      console.log(this);
+   }
+}
+
+const c = new Circle();
+const draw = c.draw;
+draw(); // undefined
+
+Private Properties and Methods using Symbols:
+const _radius = Symbol();
+const _draw = Symbol();
+
+// Here _radius and _draw are private members
+class Circle {
+   constructor(radius) {
+      this[_radius] = radius;
+   }
+
+   [_draw]() {
+      console.log("Draw");
+   }
+}
+
+
+const c = new Circle(1);
+
+
+Private Properties and Methods using Weak Map:
+const _radius = new WeakMap();
+const _move = new WeakMap();
+
+class Circle {
+   constructor(radius) {
+      _radius.set(this, radius);
+      // Here this anonymous function will execute globally
+      // so this will point to undefined as classes will execute in strict mode
+      /* _move.set(this, function() {
+         console.log("Move", this);
+      })*/
+
+      // so either use bind method or Arrow 
+      _move.set(this, () => {
+         console.log("Move", this);
+      })
+   }
+
+   draw() {
+      //console.log(_radius.get(this));
+      _move.get(this)();
+   }
+
+}
+
+const c = new Circle(1);
+
+Getters and Setters:
+const _radius = new WeakMap();
+
+class Circle {
+   constructor(radius) {
+      _radius.set(this, radius);
+   }
+
+   get radius() {
+     return _radius.get(this);
+   }
+
+   set radius(value) {
+      if(value <= 0) 
+         throw new Error("Invalid Radius");
+
+      _radius.set(this, value);
+   }
+}
+
+const c = new Circle(1);
+
+Inheritance:
+class Shape {
+   constructor(color) {
+      this.color = color;
+   }
+}
+
+class Circle extends Shape {
+
+   constructor(color, radius) {
+      super(color);
+      this.radius = radius;
+   }
+
+   draw() {
+      console.log("Draw");
+   }
+}
+
+let c = new Circle("red", 1);
+
+Method Overriding:
+class Shape {
+   move() {
+      console.log("move");
+   }
+}
+
+class Circle extends Shape {
+
+  move() {
+     super.move();
+     console.log("circle move");
+  }
+}
+
+let c = new Circle();
+
+Exercise:
+const _elements = new WeakMap();
+
+class Stack {
+   constructor() {
+      _elements.set(this, []);
+   }
+
+   peek() {
+      let elements = _elements.get(this);
+
+      if(elements.length == 0)
+         throw new Error("Stack is Empty");
+
+      return elements[elements.length-1];
+   }
+
+   push(value) {
+      _elements.get(this).push(value);
+   }
+
+   pop() {
+      let elements = _elements.get(this);
+
+      if(elements.length == 0)
+         throw new Error("Stack is Empty");
+
+      return  elements.pop();
+   }
+
+   get count() {
+      return  _elements.get(this).length;
+   }
+}
+
+CommonJs Modules:
+circle.js
+const _radius = new WeakMap();
+
+class Circle {
+   constructor(radius) {
+      _radius.set(this, radius);
+   }
+
+   draw() {
+      console.log("Circle with radius " + _radius.get(this));
+   }
+
+}
+
+module.exports = Circle;
+
+
+index.js
+const Circle = require('./circle');
+
+const c = new Circle(1);
+c.draw();
